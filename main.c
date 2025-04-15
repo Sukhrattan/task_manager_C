@@ -51,18 +51,18 @@ int main(){
 }
 
 void header(){
-    printf(ANSI_COLOR_YELLOW"/===================================\\"ANSI_COLOR_YELLOW"\n");
+    printf(ANSI_COLOR_YELLOW"/===================================\\"ANSI_COLOR_RESET"\n");
     printf(ANSI_COLOR_MAGENTA"\tTodo List Manager -C"ANSI_COLOR_MAGENTA"\n");
-    printf(ANSI_COLOR_YELLOW"/===================================\\"ANSI_COLOR_YELLOW"\n");
+    printf(ANSI_COLOR_YELLOW"/===================================\\"ANSI_COLOR_RESET"\n");
 }
 
 int menu(){
-    printf("|"" 1. Add a Task\n");
-    printf("|"" 2. Show all Tasks\n");
-    printf("|"" 3. Mark Tasks as Completed\n");
-    printf("|"" 4. Delete a Task\n");
-    printf("|"" 5. Edit a Task\n");
-    printf("|"" 6. Quit Application\n");
+    printf(ANSI_COLOR_GREEN"|"" 1. Add a Task\n");
+    printf(ANSI_COLOR_GREEN"|"" 2. Show all Tasks\n");
+    printf(ANSI_COLOR_GREEN"|"" 3. Mark Tasks as Completed\n");
+    printf(ANSI_COLOR_GREEN"|"" 4. Delete a Task\n");
+    printf(ANSI_COLOR_GREEN"|"" 5. Edit a Task\n");
+    printf(ANSI_COLOR_GREEN"|"" 6. Quit Application\n"ANSI_COLOR_RESET);
     int choices;
     printf("------------------------\n");
     printf(ANSI_FONT_BOLD"Choose an Option to perform a Command! : "ANSI_FONT_BOLD);
@@ -82,10 +82,10 @@ int addTask(struct todo *node){
 
         printf("\nEnter Task Name : ");
         scanf(" %[^\n]%*c",task_ptr->tasks);
-        fflush(stdin);
+        
         printf("\nEnter Task Deadline : ");
         scanf(" %[^\n]%*c",task_ptr->task_deadline);
-        fflush(stdin);
+        
         printf("\nEnter Task Priority (high,medium,low) : ");
         scanf(" %s",task_ptr->task_priority);
         
@@ -115,7 +115,7 @@ void showTasks(struct todo *node){
     printf("Serial No\tTask Name\tTask Deadline\tTask Status\tTask Priority\n");
     while(printer!=NULL){
         
-        printf(" %d\t\t%s\t\t%s\t\t%s\t\t%s",serial,printer->tasks,printer->task_deadline,printer->task_status,printer->task_priority);
+        printf(" %d\t\t%s\t\t%s\t\t"ANSI_COLOR_RED"%s"ANSI_COLOR_RESET"\t\t%s",serial,printer->tasks,printer->task_deadline,printer->task_status,printer->task_priority);
         printf("\n");
         printer = printer->next;
         serial += 1;
