@@ -23,7 +23,9 @@ void header();
 int menu();
 int addTask(struct todo *node);
 void showTasks(struct todo *node);
-
+int changeStatus(struct todo *node);
+int length(struct todo *node);
+void deleteTask(struct todo *node);
 int main(){
     
     
@@ -42,7 +44,12 @@ int main(){
         else if(choice == 2){
             showTasks(node);
         }
-
+        else if(choice == 3){
+            changeStatus(node);
+        }
+        else if(choice == 4){
+            deleteTask(node);
+        }
 
         else if(choice == 6){
             break;
@@ -108,18 +115,39 @@ int addTask(struct todo *node){
     
 
 }
+int length(struct todo *node){
+    struct todo *counter = node->next;
+    int count = 0;
+    while(counter!=NULL){
+        counter = counter->next;
+        count++;
+    }
+    return count;
+}
 
 void showTasks(struct todo *node){
     struct todo *printer = node->next;
     int serial = 1;
-    printf("Serial No\tTask Name\tTask Deadline\tTask Status\tTask Priority\n");
+    if(printer==NULL){
+        printf("No Tasks Available");
+    }
+    else{
+        printf("Serial No\tTask Name\tTask Deadline\tTask Status\tTask Priority\n");
+    }
+    
     while(printer!=NULL){
         
-        printf(" %d\t\t%s\t\t%s\t\t"ANSI_COLOR_RED"%s"ANSI_COLOR_RESET"\t\t%s",serial,printer->tasks,printer->task_deadline,printer->task_status,printer->task_priority);
+        if(strcmp(printer->task_status,"Completed")){
+            printf(" %d\t\t%s\t\t%s\t\t"ANSI_COLOR_RED"%s"ANSI_COLOR_RESET"\t\t%s",serial,printer->tasks,printer->task_deadline,printer->task_status,printer->task_priority);
+        }
+        else{
+            printf(" %d\t\t%s\t\t%s\t\t"ANSI_COLOR_GREEN"%s"ANSI_COLOR_RESET"\t\t%s",serial,printer->tasks,printer->task_deadline,printer->task_status,printer->task_priority);
+        }
         printf("\n");
         printer = printer->next;
         serial += 1;
     }
+    
     char request;
     do {
         printf("\nPress 'B' to go back to menu: ");
@@ -127,4 +155,47 @@ void showTasks(struct todo *node){
     } while (request != 'B' && request != 'b');
 }
     
+int changeStatus(struct todo *node){
+    int len = length(node);
+    showTasks(node);
+    int count;
+    int counter = 1;
+    printf("\n Choose the Task Number you would like to Mark as Complete! : ");
+    scanf(" %d",&count);
+    struct todo *status = node->next;
+    
+    while(status!=NULL){
+        if(counter==count){
+            strcpy(status->task_status,"Completed");
+            printf("Task Status Successfully Changed!");
+            break;
+        }
+        counter++;
+        status=status->next;
+    } 
+ 
+}
 
+void deleteTask(struct todo *node){
+    struct todo *delete = node->next;
+    struct todo *prev = node;
+    int counter = 1;
+    int count;
+    printf("\nWhich Task would you like to delete ? : ");
+    scanf(" %d",&count);
+    while(delete!=NULL){
+        if(count == counter){
+            prev->next=delete->next;
+            free(delete);
+            printf("Task %d successfully deleted from the Task List.",count);
+            break;
+            
+        }
+        counter++;
+        prev = delete;
+        delete = delete->next;
+    }
+
+    
+
+}
