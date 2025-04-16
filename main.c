@@ -26,6 +26,7 @@ void showTasks(struct todo *node);
 int changeStatus(struct todo *node);
 int length(struct todo *node);
 void deleteTask(struct todo *node);
+void editTask(struct todo *node);
 int main(){
     
     
@@ -50,7 +51,9 @@ int main(){
         else if(choice == 4){
             deleteTask(node);
         }
-
+        else if(choice == 5){
+            editTask(node);
+        }
         else if(choice == 6){
             break;
         }
@@ -71,7 +74,7 @@ int menu(){
     printf(ANSI_COLOR_GREEN"|"" 5. Edit a Task\n");
     printf(ANSI_COLOR_GREEN"|"" 6. Quit Application\n"ANSI_COLOR_RESET);
     int choices;
-    printf("------------------------\n");
+    printf(ANSI_COLOR_YELLOW"---------------------------------"ANSI_COLOR_RESET"\n");
     printf(ANSI_FONT_BOLD"Choose an Option to perform a Command! : "ANSI_FONT_BOLD);
     scanf("%d",&choices);
     printf("\n");
@@ -124,6 +127,7 @@ int length(struct todo *node){
     }
     return count;
 }
+
 
 void showTasks(struct todo *node){
     struct todo *printer = node->next;
@@ -187,7 +191,7 @@ void deleteTask(struct todo *node){
         if(count == counter){
             prev->next=delete->next;
             free(delete);
-            printf("Task %d successfully deleted from the Task List.",count);
+            printf("\nTask %d successfully deleted from the Task List.",count);
             break;
             
         }
@@ -196,6 +200,25 @@ void deleteTask(struct todo *node){
         delete = delete->next;
     }
 
-    
+}
 
+void editTask(struct todo *node){
+    struct todo *editor = node->next;
+    int sno;
+    printf("\nEnter the Serial Number of the Task you would like to edit");
+    scanf(" %d",&sno);
+    int counter = 1;
+    while(editor!=NULL){
+        if(sno == counter){
+            printf("\nEnter The new Task Name : ");
+            scanf(" %[^\n]%*c",editor->tasks);
+            printf("\nEnter The new Task Deadline : ");
+            scanf(" %[^\n]%*c",editor->task_deadline);
+            printf("\nEnter The new Task Priority : ");
+            scanf(" %[^\n]%*c",editor->task_priority);
+        }
+        editor = editor->next;
+        counter++;
+    }
+    
 }
